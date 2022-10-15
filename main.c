@@ -17,7 +17,7 @@ int main(int argc, char const *argv[])
 
     if(-1 == q.add(q, 6))
     {
-        printf("Couldn't add to queue");
+        puts("Couldn't add to queue");
         exit(-1);
     }
 

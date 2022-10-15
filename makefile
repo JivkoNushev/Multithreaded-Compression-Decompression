@@ -4,13 +4,12 @@ O_FILES = main.o
 all:
 	gcc -Wall ${S_FILES} -o main.o
 
-open:
-	main:
-		code main.c
-	queue:
-		code queue.c queue.h
-	print:
-		code print.c print.h
+open_main:
+	code main.c
+open_queue:
+	code queue.c queue.h
+open_print:
+	code print.c print.h
 
 rm:
 	rm O_FILES
