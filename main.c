@@ -15,6 +15,8 @@ int main(int argc, char const *argv[])
     if( -1 == println("Queue data is: %d", q->data)) exit(-1);
     if( -1 == println("Queue data is: %f", test)) exit(-1);
 
+    puts("alo");
+
     if(-1 == q->push_back(q, 6))
     {
         puts("Couldn't add to queue");
