@@ -9,13 +9,13 @@
 
 int main(int argc, char const *argv[])
 {
-    queue q = init_queue(q);
-    q.add(q,5);
+    queue_t *q = init_queue();
+    q->push_back(q, 5);
     float test = 65.36;
-    if( -1 == println("Queue data is: %d", q.data)) exit(-1);
+    if( -1 == println("Queue data is: %d", q->data)) exit(-1);
     if( -1 == println("Queue data is: %f", test)) exit(-1);
 
-    if(-1 == q.add(q, 6))
+    if(-1 == q->push_back(q, 6))
     {
         puts("Couldn't add to queue");
         exit(-1);
