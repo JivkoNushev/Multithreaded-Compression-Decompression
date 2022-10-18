@@ -13,3 +13,11 @@ list_t* init_list_node(void* value)
 
     return new_list_node;
 }
+
+list_t* add_to_list(list_t* list, void* value)
+{
+    list* new_list = init_list_node(value);
+    new_list->next = list;
+
+    return new_list;
+}
