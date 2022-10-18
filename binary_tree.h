@@ -9,20 +9,9 @@ typedef struct binary_tree
     struct binary_tree *right;
 }node_t;
 
-node_t *init_node(int count, char charr)
-{
-    node_t *new_node = malloc(sizeof(new_node));
-    if(NULL == new_node)
-    {
-        puts("Couldn't malloc new_node");
-        exit(-1);
-    }
-    new_node->charr = charr;
-    new_node->count = count;
-    new_node->left = new_node->right = NULL;
-
-    return new_node;
-}
+node_t *init_node(int count, char charr);
+void print_node(const node_t * const node);
+int compare_nodes(const node_t * const first, const node_t * const second);
 
 
 #endif
