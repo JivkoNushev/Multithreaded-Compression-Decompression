@@ -16,6 +16,6 @@ typedef struct queue_t
 
 queue_t* init_queue();
 int push_back(queue_t *q, int data);
-queue_t *init_node(int data);
+queue_t* init_node(int data);
 
 #endif
