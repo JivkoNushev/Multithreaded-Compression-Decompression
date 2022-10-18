@@ -1,8 +1,8 @@
 S_FILES = main.c queue.c print.c
-O_FILES = main.o
+O_FILES = a.o
 
 all:
-	gcc -Wall ${S_FILES} -o executable.o
+	gcc -Wall ${S_FILES} -o a.o
 
 open_main:
 	code main.c
