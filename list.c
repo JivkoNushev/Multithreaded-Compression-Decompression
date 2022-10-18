@@ -33,3 +33,20 @@ int has_in_list(list_t* list, void* value)
     }
     return 0;
 }
+
+list_t* remove_from_list(list_t* list, void* value)
+{
+    list *prev = list, *tmp;
+    for(list *it = list; NULL != it; prev = it, it = it->next)
+    {
+        if(it->data == value)
+        {
+            tmp = prev->next = it->next;
+            free(it);
+            break;
+        }
+    }
+    if(NULL == list)
+        return tmp;
+    return list;
+}
