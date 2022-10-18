@@ -21,3 +21,15 @@ list_t* add_to_list(list_t* list, void* value)
 
     return new_list;
 }
+
+int has_in_list(list_t* list, void* value)
+{
+    for(list *it = list; NULL != it; it = it->next)
+    {
+        if(it->data == value)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
