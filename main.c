@@ -6,6 +6,7 @@
 #include <errno.h>
 
 #include "priority_queue.h"
+
 int main(int argc, char const *argv[])
 {
     char input_string[] = "TOBEORNOTTOBE";

@@ -1,6 +1,8 @@
-#include "priority_queue.h"
+#include <stdlib.h>
 
-// CREATE a priority queue node
+#include "priority_queue.h"
+#include "map.h"
+
 struct priority_queue_node* createPriorityQueueNode(char *symbol, size_t frequency)
 {
     struct priority_queue_node* new_node = (struct priority_queue_node*) malloc(sizeof(struct priority_queue_node));
@@ -10,12 +12,11 @@ struct priority_queue_node* createPriorityQueueNode(char *symbol, size_t frequen
     }
     new_node->symbol = symbol;
     new_node->frequency = frequency;
-    new_node->left_node = new_node->right_node = NULL;
+    new_node->left = new_node->right = NULL;
 
     return new_node;
 }
 
-// ADD a new node to a priority queue node
 struct priority_queue_node* addToPriorityQueue(struct priority_queue_node *pq, char *symbol, size_t frequency)
 {
     if(NULL == pq)
@@ -25,7 +26,7 @@ struct priority_queue_node* addToPriorityQueue(struct priority_queue_node *pq, c
     if(NULL == pq->right)
     {
         pq->right = createPriorityQueueNode(symbol, frequency);
-        if(NULL == new_node)
+        if(NULL == pq->right)
         {
             return NULL;
         }
@@ -34,7 +35,7 @@ struct priority_queue_node* addToPriorityQueue(struct priority_queue_node *pq, c
     if(NULL == pq->left)
     {
         pq->left = createPriorityQueueNode(symbol, frequency);
-        if(NULL == new_node)
+        if(NULL == pq->left)
         {
             return NULL;
         }
@@ -60,10 +61,9 @@ void swapNodes(struct priority_queue_node *first, struct priority_queue_node *se
     second->symbol = temp_symbol;
 }
 
-// REARRANGE the queue so to lowest frequency is at the top and the second layer is like binary tree 
 struct priority_queue_node* rearrangePriorityQueue(struct priority_queue_node *parent, struct priority_queue_node *child)
 {
-    if(NULL == parent || child == parent)
+    if(NULL == parent || NULL == child)
     {
         return NULL;
     }
@@ -93,50 +93,115 @@ struct priority_queue_node* rearrangePriorityQueue(struct priority_queue_node *p
 
 struct priority_queue_node* createMinHeap(char *input_string)
 {
-    struct map_t *map = initMap();
-    if(NULL == map)
-    {
-        return NULL;
-    }
+    struct map_t *map = NULL;
+    struct priority_queue_node *pq = NULL;
 
-    for(size_t i = 0; '\0' != input_string[i]; i++)
+    int exit_status = 0;
+    do
     {
-        if(-1 == addToMap(map, input_string[i]))
+        map = initMap(100);
+        if(NULL == map)
         {
             return NULL;
         }
-    }
 
-    char *keys = getKeysFromMap(map);
-    if(NULL == keys)
-    {
-        return NULL;
-    }
+        for(size_t i = 0; '\0' != input_string[i]; i++)
+        {
+            char symb[2] = {input_string[i], '\0'};
 
-    struct priority_queue_node *pq = createPriorityQueueNode(keys[0], map[keys[0]]);
-    if(NULL == pq)
-    {
-        return NULL;
-    }
-    char *start = keys;
-    for(start; '\0' != start; start++);
-    start++;
+            int symbol_count = getFromMap(map, symb);
+            if(-1 == symbol_count)
+            {
+                exit_status = 1;
+                break;
+            }
+            if(-1 == setToMap(map, symb, symbol_count + 1))
+            {
+                exit_status = 1;
+                break;
+            }
+        }
 
-    while('\0' != start)
-    {
-        struct priority_queue_node *pq = addToPriorityQueue(pq, keys[0], map[keys[0]]);
+        char *keys = getKeysFromMap(map);
+        if(NULL == keys)
+        {
+            exit_status = 1;
+            break;
+        }
+        
+        char *it_keys = keys;
+        char symb[2] = {*it_keys, '\0'};
+        int key_value = getFromMap(map, symb);
+        if(-1 == key_value)
+        {
+            exit_status = 1;
+            break;
+        }
+
+        pq = createPriorityQueueNode(symb, key_value);
         if(NULL == pq)
         {
-            return NULL;
-        }
-        if(NULL == (pq = rearrangePriorityQueue(pq, pq)))
-        {
+            freeMap(map);
             return NULL;
         }
         
-        for(start; '\0' != start; start++);
-        start++;
+        while ('\0' != *it_keys)
+        {
+            it_keys++;
+        }
+        it_keys++;
+
+        while('\0' != *it_keys)
+        {
+            char symb[2] = {*it_keys, '\0'};
+            key_value = getFromMap(map, symb);
+            if(-1 == key_value)
+            {
+                exit_status = 1;
+                break;
+            }
+            struct priority_queue_node *pq = addToPriorityQueue(pq, symb, key_value);
+            if(NULL == pq)
+            {
+                exit_status = 1;
+                break;
+            }
+            if(NULL == (pq = rearrangePriorityQueue(pq, pq)))
+            {
+                exit_status = 1;
+                break;
+            }
+            
+            // FIXME: This returns a warning that says: statement with no effect
+            // for(it_keys; '\0' != *it_keys; it_keys++);
+            // it_keys++;
+            while ('\0' != *it_keys)
+            {
+                it_keys++;
+            }
+            it_keys++;
+
+        }
+    } while (0);
+
+    freeMap(map);
+
+    if(1 == exit_status)
+    {
+        return NULL;
+    }
+    return pq;
+}
+
+void freeQueue(struct priority_queue_node *pq)
+{
+    if(NULL == pq)
+    {
+        return;
     }
 
-    return pq;
+    freeQueue(pq->left);
+    freeQueue(pq->right);
+
+    free(pq);
 }

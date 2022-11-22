@@ -1,4 +1,4 @@
-S_FILES = main.c queue.c print.c
+S_FILES = main.c string.c priority_queue.c map.c linked_list.c
 O_FILES = a.o
 
 all:
@@ -6,8 +6,7 @@ all:
 
 open_main:
 	code main.c
-open_queue:
-	code queue.c queue.h
+
 open_print:
 	code print.c print.h
 
