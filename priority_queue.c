@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "priority_queue.h"
@@ -204,4 +205,17 @@ void freeQueue(struct priority_queue_node *pq)
     freeQueue(pq->right);
 
     free(pq);
+}
+
+void printPriorityQueue(struct priority_queue_node *pq)
+{
+    if (NULL == pq)
+    {
+        return;
+    }
+
+    printPriorityQueue(pq->left);
+    printPriorityQueue(pq->right);
+
+    printf("Symbol: %s, Frequency: %lu\n", pq->symbol, pq->frequency);
 }

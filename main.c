@@ -21,6 +21,8 @@ int main(int argc, char const *argv[])
             break;
         }
 
+        printPriorityQueue(min_heap);
+
     } while (0);
     
     if(EXIT_SUCCESS == exit_status)

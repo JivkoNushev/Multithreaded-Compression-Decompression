@@ -31,4 +31,7 @@ struct priority_queue_node* createMinHeap(char *input_string);
 // TODO: When the option for multiple symbols is added, to add a free to the symbols variable
 void freeQueue(struct priority_queue_node *pq);
 
+// PRINT the Priority Queue 
+void printPriorityQueue(struct priority_queue_node *pq);
+
 #endif
