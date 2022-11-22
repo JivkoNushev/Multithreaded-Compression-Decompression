@@ -27,4 +27,5 @@ int main(int argc, char const *argv[])
         return 0;
     }
     err(exit_status, NULL);
+    return 0;
 }
